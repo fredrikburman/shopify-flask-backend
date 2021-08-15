@@ -1,7 +1,7 @@
 from flask import jsonify
 import logging
 from service import profile as profile_service
-import urllib
+import random
 
 import shopify
 from flask import (
@@ -133,6 +133,7 @@ def index():
     return render_template('index.html',
                            shopify_api_key=current_app.config['SHOPIFY_API_KEY'],
                            shop=query_dict.get('shop'),
+                           backend=current_app.config["HOSTNAME"],
                            auth_token=tokens.get('auth_token'))
 
 
@@ -162,6 +163,19 @@ def parse_webhook():
         log.exception("unhandled exception when parsing webhook for: {}, {}".format(shop_url, data))
         abort(500)
     return jsonify({"message": "Nom nom nom"})
+
+
+@shopify_bp.route('/demo-post-request', methods=['POST'])
+@token_auth.login_required
+def demo_post_request():
+    tacos = ["carne Asada", "shrimp taco", "fish Taco", "barbacoa", "tacos de Birria", "tacos Al Pastor", "carnitas", "nopales"]
+    if request.is_json:
+        data = request.get_json()
+        log.info(f'post received: {data}')
+    msg = f"I think you should try a {random.choice(tacos)}"
+    return jsonify({
+        "message": msg,
+    })
 
 
 def _parse_profile_data(data):

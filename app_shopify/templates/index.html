@@ -16,9 +16,11 @@
    <meta name="author" content="">
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <script src="https://unpkg.com/@shopify/app-bridge"></script>
+    <link rel="stylesheet" href="/shopify/static/bootstrap-polaris.min.css">
    <script>
         // Put the app API token in the window so that you can use it to make authenticated requests to the Flask backend.
         window.authToken = "{{ auth_token }}";
+        window.backend = "{{ backend }}";
         var AppBridge = window['app-bridge'];
         var Actions = window['app-bridge'].actions;
         var Redirect = Actions.Redirect;
@@ -30,18 +32,46 @@
             shopOrigin: "{{ shop }}"
         });
 
+    function getTaco() {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          console.log(xhr.response);
+          var response = JSON.parse(xhr.response);
+          var ele = document.getElementById("tacoText");
+          ele.innerHTML = response.message;
+        }
+      };
+
+      xhr.open('POST', window.backend + "/shopify/demo-post-request", true);
+      xhr.setRequestHeader('Authorization', 'Bearer ' + window.authToken);
+      xhr.send('');
+    }
+
    </script>
     <style>
-        #shop-details {
-            padding: 40px;
+        .mt {
+            margin-top: 10px;
         }
     </style>
 </head>
 
 <body>
-  <div id="shop-details">
-    <h2 id="shop-url">Hello there {{ shop }}</h2>
-      <p>You can use whatever tools you like to create the app, there are some decent guides out there for React. </p>
-      <p>If you decide to use plain vanilla JS there is a <a href="https://github.com/ablesense/bootstrap-polaris" target="_blank">Bootstrap Polaris theme</a> that you should use to adhere to the Polaris style guide required by Shopify.</p>
+<main class="container">
+    <div style="margin-top:40px">
+    <div class="display-3" id="shop-url">You made it! 🥳 </div>
+      <p class="mt">This page is using the <a href="https://github.com/ablesense/bootstrap-polaris" target="_blank">Bootstrap Polaris theme</a> which gives you the things you need to adhere to the Polaris style guide required by Shopify.</p>
+      <p class="mt">You can use whatever tools you like to create the app, there are some decent guides out there for React and other frameworks. </p>
   </div>
+  <div style="margin-top:50px; margin-bottom: 100px">
+      <div class="card">
+          <div class="card-body">
+            <h3>Find me a taco</h3>
+            <p>We love tacos and believe your should eat them all the time.</p>
+            <p><button type="button" class="btn btn-primary" onclick="getTaco()">Tell me which taco I should eat</button></p>
+            <p class="display-3" id="tacoText"></p>
+          </div>
+      </div>
+  </div>
+</main>
 </body>
