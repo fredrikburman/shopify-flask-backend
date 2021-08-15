@@ -1,0 +1,12 @@
+Flask >= 1.1.1
+ShopifyAPI >= 5.1.2
+python-dotenv >= 0.10.3
+Flask-SQLAlchemy==2.4.4
+Flask-Migrate==2.5.3
+gunicorn==20.0.4
+psycopg2-binary==2.8.6
+Flask-Cors==3.0.9
+simplejson==3.17.2
+Flask-HTTPAuth==4.2.0
+requests==2.25.0
+stripe==2.55.1

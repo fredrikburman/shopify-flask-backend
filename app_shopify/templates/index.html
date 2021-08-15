@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Tigers are great and tacos are tasty" />
+  <meta name="author" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/@shopify/polaris@4.22.0/styles.min.css"
+  />
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+   <title>Tigers & Tacos</title>
+   <meta name="description" content="This is a boilerplate created by Tigers & Tacos">
+   <meta name="author" content="">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <script src="https://unpkg.com/@shopify/app-bridge"></script>
+   <script>
+        // Put the app API token in the window so that you can use it to make authenticated requests to the Flask backend.
+        window.authToken = "{{ auth_token }}";
+        var AppBridge = window['app-bridge'];
+        var Actions = window['app-bridge'].actions;
+        var Redirect = Actions.Redirect;
+
+        var createApp = AppBridge.default;
+        var apiKey = "{{ shopify_api_key }}";
+        var app = createApp({
+            apiKey: apiKey,
+            shopOrigin: "{{ shop }}"
+        });
+
+   </script>
+    <style>
+        #shop-details {
+            padding: 40px;
+        }
+    </style>
+</head>
+
+<body>
+  <div id="shop-details">
+    <h2 id="shop-url">Hello there {{ shop }}</h2>
+      <p>You can use whatever tools you like to create the app, there are some decent guides out there for React. </p>
+      <p>If you decide to use plain vanilla JS there is a <a href="https://github.com/ablesense/bootstrap-polaris" target="_blank">Bootstrap Polaris theme</a> that you should use to adhere to the Polaris style guide required by Shopify.</p>
+  </div>
+</body>

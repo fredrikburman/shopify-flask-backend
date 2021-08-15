@@ -1,0 +1,21 @@
+version: '3'
+services:
+  test-db:
+    image: postgres:12.0
+    environment:
+      POSTGRES_DB: tacos
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpass
+  test-runner:
+    build: 
+      dockerfile: Dockerfile.test
+      context: .
+    depends_on: 
+      - test-db
+    environment: 
+      DATABASE_URL: postgresql://testuser:testpass@test-db/tacos
+      WEBHOOK_TEST_MODE: "true"
+      SHOPIFY_BILLING_TEST_MODE: "true"
+    volumes:
+      - .:/app
+    command: nose2

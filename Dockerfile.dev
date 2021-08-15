@@ -1,0 +1,7 @@
+FROM python:3.9.0-slim-buster
+
+WORKDIR /app
+ADD requirements.txt /app/requirements.txt
+RUN python3 -m pip install -r requirements.txt --no-cache-dir
+
+CMD gunicorn -w 3 -b :5000 -t 30 --reload wsgi:app

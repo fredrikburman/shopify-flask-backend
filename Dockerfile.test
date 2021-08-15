@@ -1,0 +1,8 @@
+FROM python:3.9.0-slim-buster
+
+RUN python3 -m pip install nose2
+ADD requirements.txt requirements.txt
+RUN python3 -m pip install -r requirements.txt --no-cache-dir
+
+WORKDIR /app
+

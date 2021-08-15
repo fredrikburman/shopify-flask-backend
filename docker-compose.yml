@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  taco-db:
+    image: postgres:12.0
+    environment:
+      POSTGRES_DB: taco
+      POSTGRES_USER: taco-api
+      POSTGRES_PASSWORD: dbpassword
+  taco-api:
+    env_file:
+      - ./.env
+    build:
+      dockerfile: Dockerfile.dev
+      context: .
+    depends_on:
+      - taco-db
+    environment:
+      DATABASE_URL: postgresql://taco-api:dbpassword@taco-db/taco
+      FLASK_ENV: dev
+      LOG_LEVEL: DEBUG
+      SHOPIFY_BILLING_TEST_MODE: "true"
+    volumes:
+      - .:/app
+    networks:
+      - default
+    ports:
+      - 5000:5000
+    command: sh -c 'flask db upgrade && gunicorn -w 3 -b :5000 -t 30 --reload wsgi:app'
