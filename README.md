@@ -1,6 +1,6 @@
 What is this stuff?
 ===================
-This is a Flask/Python boilerplate Shopify backend app that you can use to kick start the development of your next Shopify App.
+This is a Flask/Python boilerplate Shopify backend app that you can use to kick start the development of your next Shopify App. Checkout [this blog post](https://www.tigersandtacos.dev/posts/create-a-shopify-backend-service-in-python-flask/) for more information on what it does and how you can get it up and running.
 
 The features:
 - Handle app installs from merchants
