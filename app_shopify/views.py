@@ -30,32 +30,26 @@ def profile_update():
     make sure that the user is authenticated and then perform stuff with the data provided.
     For example update a profile.
     """
-    if request.is_json:
+    merchant = token_auth.current_user()
+    if request.method == "GET":
+        return make_response(jsonify({"message": "OK", "data": _setup_profile_data(merchant.__dict__)}))
+    if request.is_json and request.method == "POST":
         data = request.get_json()
-        if 'get' in data.keys():
-            profile = profile_service.get(data['shop'])
-            return jsonify(_setup_profile_data(profile))
         try:
             profile_data = _parse_profile_data(data)
-            shop = profile_data.pop('shop')
         except KeyError as e:
             log.error(f'Issue with parsing profile data {e} ')
             return make_response(jsonify({"message": "Could not process provided data"}), 400)
         try:
-            profile = profile_service.get(shop)
-            if "contact_email" not in profile.keys():
-                log.info(f'Store {shop} not properly installed.')
-                return install()
-            profile_service.update(shop,
+            profile_service.update(merchant.shop_unique_id,
                                    profile_data)
-
         except Exception as e:  # NOQA
             log.exception(f'failed to persist profile: {e}')
             return make_response(jsonify({"message": "Failed to persist profile"}), 400)
 
-        profile = profile_service.get(shop)
+        profile = profile_service.get(merchant.shop_unique_id)
         return make_response(jsonify({"message": "OK", "data": _setup_profile_data(profile)}))
-    return jsonify({"message": "Please try again..."})
+    return jsonify({"message": "Invalid request"})
 
 
 @shopify_bp.route('/install')
